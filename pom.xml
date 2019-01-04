@@ -10,6 +10,7 @@
 
     <modules>
         <module>hot_deploy</module>
+        <module>introduction</module>
     </modules>
 
     <properties>
