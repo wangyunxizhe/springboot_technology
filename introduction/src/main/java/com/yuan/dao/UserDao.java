@@ -3,6 +3,7 @@ package com.yuan.dao;
 import com.yuan.domain.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,4 +30,12 @@ public class UserDao {
         return repo.put(id, user) == null;
     }
 
+    /**
+     * 返回所有用户列表
+     *
+     * @return 所有用户列表
+     */
+    public Collection<User> findAll() {
+        return repo.values();
+    }
 }

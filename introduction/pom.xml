@@ -22,9 +22,17 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- 默认使用Tomcat启动，但MyURLMappingConfig类中的方式，必须使用Netty启动才能有效果，所以这里注释了 -->
+        <!-- <dependency>
+             <groupId>org.springframework.boot</groupId>
+             <artifactId>spring-boot-starter-web</artifactId>
+         </dependency>-->
+
+        <!-- 默认使用Netty启动 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+            <version>2.1.0.RELEASE</version>
         </dependency>
 
         <dependency>
@@ -55,6 +63,7 @@
             <optional>true</optional>
             <version>2.1.0.RELEASE</version>
         </dependency>
+
     </dependencies>
 
     <build>

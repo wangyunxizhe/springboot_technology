@@ -17,13 +17,15 @@ public class UserController {
         this.userDao = userDao;
     }
 
+    //保存用户
     @PostMapping("/person/save")
     public User save(@RequestParam String name) {
         User user = new User();
         user.setName(name);
         if (userDao.save(user)) {
-            System.out.printf("用户对象：% 保存成功！\n", user);
+            System.out.printf("用户对象：%s 保存成功！\n", user);
         }
         return user;
     }
+
 }
