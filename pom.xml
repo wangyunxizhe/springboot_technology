@@ -11,6 +11,7 @@
     <modules>
         <module>hot_deploy</module>
         <module>introduction</module>
+        <module>email</module>
     </modules>
 
     <properties>
