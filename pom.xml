@@ -12,6 +12,7 @@
         <module>hot_deploy</module>
         <module>introduction</module>
         <module>email</module>
+        <module>miaosha</module>
     </modules>
 
     <properties>
