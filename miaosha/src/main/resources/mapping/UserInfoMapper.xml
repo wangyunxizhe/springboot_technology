@@ -10,32 +10,27 @@
         <result column="register_model" jdbcType="VARCHAR" property="registerModel"/>
         <result column="third_party_id" jdbcType="VARCHAR" property="thirdPartyId"/>
     </resultMap>
-
     <sql id="Base_Column_List">
-      id, name, gender, age, tel, register_model, third_party_id
-    </sql>
-
+    id, name, gender, age, tel, register_model, third_party_id
+  </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_miaosha_user_info
         where id = #{id,jdbcType=INTEGER}
     </select>
-
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from t_miaosha_user_info
-        where id = #{id,jdbcType=INTEGER}
-    </delete>
-
-    <insert id="insert" parameterType="com.yuan.entity.UserInfo">
-        insert into t_miaosha_user_info (id, name, gender,
-          age, tel, register_model,
-          third_party_id)
-        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT},
-          #{age,jdbcType=INTEGER}, #{tel,jdbcType=VARCHAR}, #{registerModel,jdbcType=VARCHAR},
-          #{thirdPartyId,jdbcType=VARCHAR})
-    </insert>
-
+    delete from t_miaosha_user_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.yuan.entity.UserInfo" keyProperty="id" useGeneratedKeys="true">
+    insert into t_miaosha_user_info (id, name, gender, 
+      age, tel, register_model, 
+      third_party_id)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, 
+      #{age,jdbcType=INTEGER}, #{tel,jdbcType=VARCHAR}, #{registerModel,jdbcType=VARCHAR}, 
+      #{thirdPartyId,jdbcType=VARCHAR})
+  </insert>
     <insert id="insertSelective" parameterType="com.yuan.entity.UserInfo" keyProperty="id" useGeneratedKeys="true">
         insert into t_miaosha_user_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -85,7 +80,6 @@
             </if>
         </trim>
     </insert>
-
     <update id="updateByPrimaryKeySelective" parameterType="com.yuan.entity.UserInfo">
         update t_miaosha_user_info
         <set>
@@ -110,17 +104,16 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-
     <update id="updateByPrimaryKey" parameterType="com.yuan.entity.UserInfo">
-        update t_miaosha_user_info
-        set name = #{name,jdbcType=VARCHAR},
-          gender = #{gender,jdbcType=TINYINT},
-          age = #{age,jdbcType=INTEGER},
-          tel = #{tel,jdbcType=VARCHAR},
-          register_model = #{registerModel,jdbcType=VARCHAR},
-          third_party_id = #{thirdPartyId,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=INTEGER}
-    </update>
+    update t_miaosha_user_info
+    set name = #{name,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=TINYINT},
+      age = #{age,jdbcType=INTEGER},
+      tel = #{tel,jdbcType=VARCHAR},
+      register_model = #{registerModel,jdbcType=VARCHAR},
+      third_party_id = #{thirdPartyId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 
     <!-- 通过手机号获取用户信息 -->
     <select id="selectByTel" resultMap="BaseResultMap">

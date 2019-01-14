@@ -8,6 +8,8 @@ import com.yuan.error.MyEmError;
 import com.yuan.error.MyException;
 import com.yuan.service.UserService;
 import com.yuan.service.model.UserModel;
+import com.yuan.validator.ValidationResult;
+import com.yuan.validator.ValidatorImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserPwdMapper userPwdMapper;
+
+    @Autowired
+    private ValidatorImpl validator;
 
     //通过用户id获取用户
     @Override
@@ -56,9 +61,9 @@ public class UserServiceImpl implements UserService {
         if (userModel == null) {
             throw new MyException(MyEmError.PARAMETER_VALIDATION_ERROR);
         }
-        if (StringUtils.isEmpty(userModel.getName()) || userModel.getGender() == null
-                || userModel.getAge() == null || StringUtils.isEmpty(userModel.getTel())) {
-            throw new MyException(MyEmError.PARAMETER_VALIDATION_ERROR);
+        ValidationResult result = validator.validate(userModel);//参数校验
+        if (result.isHasErrors()) {//参数有问题，将详细问题抛出
+            throw new MyException(MyEmError.PARAMETER_VALIDATION_ERROR, result.getErrMsg());
         }
         UserInfo userInfo = changeFromModel(userModel);
         try {

@@ -31,7 +31,7 @@
 
         //绑定click事件，向后端发送获取手机验证码的请求
         $("#getotp").on("click", function () {
-            var tel = $("#tel").val();
+            var tel = $("#tel").val().trim();
             if (tel == null || tel == "") {
                 alert("手机号不能为空");
                 return false;
@@ -41,7 +41,7 @@
                 contentType: "application/x-www-form-urlencoded",
                 url: "getOtp",
                 data: {
-                    "tel": $("#tel").val()
+                    "tel": tel
                 },
                 success: function (data) {
                     if (data.status == "success") {

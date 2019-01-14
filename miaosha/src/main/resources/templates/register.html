@@ -61,12 +61,12 @@
 
         //绑定click事件，向后端发送注册的请求
         $("#register").on("click", function () {
-            var tel = $("#tel").val();
-            var otpCode = $("#otpCode").val();
-            var name = $("#name").val();
-            var gender = $("#gender").val();
-            var age = $("#age").val();
-            var pwd = $("#pwd").val();
+            var tel = $("#tel").val().trim();
+            var otpCode = $("#otpCode").val().trim();
+            var name = $("#name").val().trim();
+            var gender = $("#gender").val().trim();
+            var age = $("#age").val().trim();
+            var pwd = $("#pwd").val().trim();
             if (tel == null || tel == "") {
                 alert("手机号不能为空");
                 return false;

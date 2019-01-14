@@ -44,8 +44,8 @@
 
         //绑定click事件，向后端发送注册的请求
         $("#login").on("click", function () {
-            var tel = $("#tel").val();
-            var pwd = $("#pwd").val();
+            var tel = $("#tel").val().trim();
+            var pwd = $("#pwd").val().trim();
             if (tel == null || tel == "") {
                 alert("手机号不能为空");
                 return false;

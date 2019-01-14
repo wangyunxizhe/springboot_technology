@@ -47,6 +47,7 @@
             <version>2.1.0.RELEASE</version>
         </dependency>
 
+        <!-- 数据库相关依赖 -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -68,7 +69,7 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.7</version>
         </dependency>
-        
+
     </dependencies>
 
     <build>
@@ -106,7 +107,7 @@
                 <!-- 避免mybatis自动生成时反复生成 -->
                 <configuration>
                     <verbose>true</verbose><!-- 允许移动那些已生成的文件 -->
-                    <overwrite>true</overwrite><!-- 覆盖那些已生成的文件，在实际工作中千万不能这么干 -->
+                    <overwrite>false</overwrite><!-- 覆盖那些已生成的文件，在实际工作中千万不能true -->
                     <!-- 写mybatis生成器配置文件的位置 -->
                     <configurationFile>
                         src/main/resources/mybatis-generator.xml

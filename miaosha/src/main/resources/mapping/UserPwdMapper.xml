@@ -6,31 +6,26 @@
         <result column="encrpt_pwd" jdbcType="VARCHAR" property="encrptPwd"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
     </resultMap>
-
     <sql id="Base_Column_List">
     id, encrpt_pwd, user_id
-    </sql>
-
+  </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_miaosha_user_pwd
         where id = #{id,jdbcType=INTEGER}
     </select>
-
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_miaosha_user_pwd
     where id = #{id,jdbcType=INTEGER}
-    </delete>
-
-    <insert id="insert" parameterType="com.yuan.entity.UserPwd">
+  </delete>
+    <insert id="insert" parameterType="com.yuan.entity.UserPwd" keyProperty="id" useGeneratedKeys="true">
     insert into t_miaosha_user_pwd (id, encrpt_pwd, user_id
       )
     values (#{id,jdbcType=INTEGER}, #{encrptPwd,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}
       )
-    </insert>
-
-    <insert id="insertSelective" parameterType="com.yuan.entity.UserPwd">
+  </insert>
+    <insert id="insertSelective" parameterType="com.yuan.entity.UserPwd" keyProperty="id" useGeneratedKeys="true">
         insert into t_miaosha_user_pwd
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -55,7 +50,6 @@
             </if>
         </trim>
     </insert>
-
     <update id="updateByPrimaryKeySelective" parameterType="com.yuan.entity.UserPwd">
         update t_miaosha_user_pwd
         <set>
@@ -68,13 +62,12 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-
     <update id="updateByPrimaryKey" parameterType="com.yuan.entity.UserPwd">
     update t_miaosha_user_pwd
     set encrpt_pwd = #{encrptPwd,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
-    </update>
+  </update>
 
     <!-- 通过user_id获取表数据 -->
     <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
