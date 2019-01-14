@@ -2,6 +2,8 @@ package com.yuan.dao;
 
 import com.yuan.entity.Item;
 
+import java.util.List;
+
 public interface ItemMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,7 @@ public interface ItemMapper {
     int updateByPrimaryKeySelective(Item record);
 
     int updateByPrimaryKey(Item record);
+
+    //获取商品列表
+    List<Item> listItem();
 }

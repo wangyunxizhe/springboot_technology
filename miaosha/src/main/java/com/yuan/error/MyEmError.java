@@ -9,7 +9,9 @@ public enum MyEmError implements CommonError {
     UNKNOWN_ERROR(10002, "未知错误"),
     //2000X为用户信息相关错误定义
     USER_NOT_EXIST(20001, "用户不存在"),
-    USER_LOGIN_FAIL(20002, "用户手机号或密码不正确");
+    USER_LOGIN_FAIL(20002, "用户手机号或密码不正确"),
+    //3000X为交易信息相关错误定义
+    STOCK_NOT_ENOUGH(30001, "库存不足");
 
     MyEmError(int errCode, String errMsg) {
         this.errCode = errCode;

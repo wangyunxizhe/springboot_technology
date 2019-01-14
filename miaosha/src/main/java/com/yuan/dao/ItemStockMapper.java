@@ -1,6 +1,7 @@
 package com.yuan.dao;
 
 import com.yuan.entity.ItemStock;
+import org.apache.ibatis.annotations.Param;
 
 public interface ItemStockMapper {
     int deleteByPrimaryKey(Integer id);
@@ -17,4 +18,7 @@ public interface ItemStockMapper {
 
     //根据item_id获取表数据
     ItemStock selectByItemId(Integer id);
+
+    //库存扣减
+    int decrStock(@Param("itemId") Integer itemId, @Param("amount") Integer amount);
 }

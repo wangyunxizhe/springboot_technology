@@ -16,4 +16,7 @@ public interface ItemService {
     //商品详情浏览
     ItemModel getItemById(Integer id);
 
+    //库存扣减
+    boolean decrStock(Integer itemId, Integer amount) throws MyException;
+
 }

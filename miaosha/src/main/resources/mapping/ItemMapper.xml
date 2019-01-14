@@ -9,27 +9,32 @@
         <result column="sales" jdbcType="INTEGER" property="sales"/>
         <result column="img_url" jdbcType="VARCHAR" property="imgUrl"/>
     </resultMap>
+
     <sql id="Base_Column_List">
-    id, title, price, description, sales, img_url
-  </sql>
+        id, title, price, description, sales, img_url
+    </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_miaosha_item
         where id = #{id,jdbcType=INTEGER}
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from t_miaosha_item
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+        delete from t_miaosha_item
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
     <insert id="insert" parameterType="com.yuan.entity.Item" keyProperty="id" useGeneratedKeys="true">
-    insert into t_miaosha_item (id, title, price, 
-      description, sales, img_url
-      )
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
-      #{description,jdbcType=VARCHAR}, #{sales,jdbcType=INTEGER}, #{imgUrl,jdbcType=VARCHAR}
-      )
-  </insert>
+        insert into t_miaosha_item (id, title, price,
+          description, sales, img_url
+          )
+        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
+          #{description,jdbcType=VARCHAR}, #{sales,jdbcType=INTEGER}, #{imgUrl,jdbcType=VARCHAR}
+          )
+    </insert>
+
     <insert id="insertSelective" parameterType="com.yuan.entity.Item" keyProperty="id" useGeneratedKeys="true">
         insert into t_miaosha_item
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -73,6 +78,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.yuan.entity.Item">
         update t_miaosha_item
         <set>
@@ -94,13 +100,21 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <update id="updateByPrimaryKey" parameterType="com.yuan.entity.Item">
-    update t_miaosha_item
-    set title = #{title,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DECIMAL},
-      description = #{description,jdbcType=VARCHAR},
-      sales = #{sales,jdbcType=INTEGER},
-      img_url = #{imgUrl,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update t_miaosha_item
+        set title = #{title,jdbcType=VARCHAR},
+          price = #{price,jdbcType=DECIMAL},
+          description = #{description,jdbcType=VARCHAR},
+          sales = #{sales,jdbcType=INTEGER},
+          img_url = #{imgUrl,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!-- 获取商品列表 -->
+    <select id="listItem" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_miaosha_item ORDER BY sales DESC
+    </select>
 </mapper>

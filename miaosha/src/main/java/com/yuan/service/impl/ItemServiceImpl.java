@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -40,7 +41,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = this.changeFromModel(itemModel);
         itemMapper.insertSelective(item);
         itemModel.setId(item.getId());
-        ItemStock itemStock = this.changeFromModelByStock(itemModel);
+        ItemStock itemStock = this.changeFromModelToStock(itemModel);
         itemStockMapper.insertSelective(itemStock);
         return this.getItemById(itemModel.getId());//返回创建完成的对象
     }
@@ -56,7 +57,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     //将ItemModel中的部分属性值，封装到ItemStock中
-    public ItemStock changeFromModelByStock(ItemModel itemModel) {
+    public ItemStock changeFromModelToStock(ItemModel itemModel) {
         if (itemModel == null) {
             return null;
         }
@@ -69,7 +70,14 @@ public class ItemServiceImpl implements ItemService {
     //商品列表浏览
     @Override
     public List<ItemModel> listItem() {
-        return null;
+        List<Item> itemList = itemMapper.listItem();
+        //将List<Item>转为List<ItemModel>，运用Java8中的新写法
+        List<ItemModel> itemModels = itemList.stream().map(item -> {
+            ItemStock itemStock = itemStockMapper.selectByItemId(item.getId());
+            ItemModel itemModel = this.changeFromItemEntity(item, itemStock);
+            return itemModel;
+        }).collect(Collectors.toList());
+        return itemModels;
     }
 
     //商品详情浏览
@@ -91,6 +99,17 @@ public class ItemServiceImpl implements ItemService {
         BeanUtils.copyProperties(item, itemModel);//将item中的属性值，copy到itemModel的相同属性里
         itemModel.setStock(itemStock.getStock());
         return itemModel;
+    }
+
+    //库存扣减
+    @Override
+    @Transactional
+    public boolean decrStock(Integer itemId, Integer amount) throws MyException {
+        int affectedRow = itemStockMapper.decrStock(itemId, amount);//受影响行数
+        if (affectedRow > 0) {//受影响行数大于0，说明更新成功
+            return true;
+        }
+        return false;
     }
 
 }

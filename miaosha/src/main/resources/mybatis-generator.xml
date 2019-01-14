@@ -46,7 +46,7 @@
 
         <!-- 生成对应表的实体类，以及类名 -->
         <!-- XXXByExampleXXX:是否生成实体类的Example类，默认生成 -->
-        <table schema="" tableName="t_miaosha_user_info" domainObjectName="UserInfo"
+        <!--<table schema="" tableName="t_miaosha_user_info" domainObjectName="UserInfo"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false"></table>
         <table schema="" tableName="t_miaosha_user_pwd" domainObjectName="UserPwd"
@@ -56,6 +56,9 @@
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false"></table>
         <table schema="" tableName="t_miaosha_item_stock" domainObjectName="ItemStock"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+        <table schema="" tableName="t_miaosha_order_info" domainObjectName="OrderInfo"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false"></table>
     </context>

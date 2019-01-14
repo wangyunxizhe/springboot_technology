@@ -6,25 +6,30 @@
         <result column="stock" jdbcType="INTEGER" property="stock"/>
         <result column="item_id" jdbcType="INTEGER" property="itemId"/>
     </resultMap>
+
     <sql id="Base_Column_List">
-    id, stock, item_id
-  </sql>
+        id, stock, item_id
+    </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_miaosha_item_stock
         where id = #{id,jdbcType=INTEGER}
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from t_miaosha_item_stock
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+        delete from t_miaosha_item_stock
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
     <insert id="insert" parameterType="com.yuan.entity.ItemStock" keyProperty="id" useGeneratedKeys="true">
-    insert into t_miaosha_item_stock (id, stock, item_id
-      )
-    values (#{id,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}
-      )
-  </insert>
+        insert into t_miaosha_item_stock (id, stock, item_id
+          )
+        values (#{id,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}
+          )
+    </insert>
+
     <insert id="insertSelective" parameterType="com.yuan.entity.ItemStock" keyProperty="id" useGeneratedKeys="true">
         insert into t_miaosha_item_stock
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -50,6 +55,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.yuan.entity.ItemStock">
         update t_miaosha_item_stock
         <set>
@@ -62,12 +68,13 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <update id="updateByPrimaryKey" parameterType="com.yuan.entity.ItemStock">
-    update t_miaosha_item_stock
-    set stock = #{stock,jdbcType=INTEGER},
-      item_id = #{itemId,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update t_miaosha_item_stock
+        set stock = #{stock,jdbcType=INTEGER},
+          item_id = #{itemId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
     <!-- 根据item_id获取表数据 -->
     <select id="selectByItemId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -76,4 +83,11 @@
         from t_miaosha_item_stock
         where item_id = #{itemId,jdbcType=INTEGER}
     </select>
+
+    <!-- 库存扣减 -->
+    <update id="decrStock">
+        update t_miaosha_item_stock
+        set stock = stock - #{amount}
+        where item_id = #{itemId} and stock >= #{amount}
+    </update>
 </mapper>
