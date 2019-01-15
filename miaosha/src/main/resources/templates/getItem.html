@@ -47,6 +47,11 @@
             <label class="control-label" id="sales"/>
         </div>
     </div>
+    <div class="form-actions">
+        <button class="btn blue" id="createOrder" type="submit">
+            下单
+        </button>
+    </div>
 </div>
 </body>
 <script>
@@ -96,6 +101,32 @@
             $("#stock").text(g_itemVO.stock);
             $("#sales").text(g_itemVO.sales);
         }
+
+        //下单按钮点击事件
+        $("#createOrder").on("click", function () {
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/order/createOrder",
+                data: {
+                    "itemId": g_itemVO.id,
+                    "amount": 1//写死只能买1件
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        alert("下单成功");
+                        window.location.reload();//刷新
+                    } else {
+                        alert("下单失败，原因为：" + data.data.errMsg);
+                        if (data.data.errCode == 20003) {//如果是未登录，就跳转登录页
+                            window.location.href = "http://localhost:8080/user/toLogin";
+                        }
+                    }
+                },
+                error: function (data) {
+                    alert("下单失败，原因为：" + data.responseText);
+                }
+            });
+        });
 
     });
 </script>

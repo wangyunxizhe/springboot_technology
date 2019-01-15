@@ -65,6 +65,7 @@
                 success: function (data) {
                     if (data.status == "success") {
                         alert("登录成功");
+                        window.location.href = "http://localhost:8080/item/toListItem";
                     } else {
                         alert("登录失败，原因为：" + data.data.errMsg);
                     }

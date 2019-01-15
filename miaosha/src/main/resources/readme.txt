@@ -1,7 +1,7 @@
 本工程为模拟一个秒杀项目。
-工程数据上的设计思想：
+工程数据上的设计思想，通过建立领域模型，实现分层设计思路，实现基本流程，具体做法：
 1，entity包中的javabean直接对应数据库中的数据，属于dao层。
-2，model包中的javabean是将dao层获取的数据继续封装。
+2，model包中的javabean（即领域模型）是将dao层获取的数据继续封装。
 比如A/B关联表中的数据，会在service层中将A表和B表，建立一个共同的领域模型，
 将A/B表中的数据封装到一个新的javabean中，属于service层。
 3，controller包中的javabean是将service层获取的数据继续封装。

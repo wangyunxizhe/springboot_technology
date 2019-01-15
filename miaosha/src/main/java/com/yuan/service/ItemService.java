@@ -19,4 +19,7 @@ public interface ItemService {
     //库存扣减
     boolean decrStock(Integer itemId, Integer amount) throws MyException;
 
+    //商品销量增加
+    void addSales(Integer itemId, Integer amount) throws MyException;
+
 }

@@ -57,8 +57,11 @@
                enableSelectByExample="false" selectByExampleQueryId="false"></table>
         <table schema="" tableName="t_miaosha_item_stock" domainObjectName="ItemStock"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+               enableSelectByExample="false" selectByExampleQueryId="false"></table>
         <table schema="" tableName="t_miaosha_order_info" domainObjectName="OrderInfo"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+        <table schema="" tableName="t_miaosha_sequence_info" domainObjectName="SequInfo"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false"></table>
     </context>

@@ -112,4 +112,11 @@ public class ItemServiceImpl implements ItemService {
         return false;
     }
 
+    //增加商品销量
+    @Override
+    @Transactional
+    public void addSales(Integer itemId, Integer amount) throws MyException {
+        itemMapper.addSales(itemId, amount);
+    }
+
 }

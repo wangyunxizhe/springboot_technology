@@ -117,4 +117,12 @@
         <include refid="Base_Column_List"/>
         from t_miaosha_item ORDER BY sales DESC
     </select>
+
+    <!-- 增加商品销量 -->
+    <update id="addSales">
+        update t_miaosha_item
+        set
+        sales = sales + #{amount}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>
