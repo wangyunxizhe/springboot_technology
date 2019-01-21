@@ -37,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private SequInfoMapper sequInfoMapper;
 
+    //创建订单
     @Override
     @Transactional
     public OrderModel createOrder(Integer userId, Integer itemId, Integer amount) throws MyException {

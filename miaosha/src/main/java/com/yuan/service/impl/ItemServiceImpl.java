@@ -7,7 +7,9 @@ import com.yuan.entity.ItemStock;
 import com.yuan.error.MyEmError;
 import com.yuan.error.MyException;
 import com.yuan.service.ItemService;
+import com.yuan.service.PromoService;
 import com.yuan.service.model.ItemModel;
+import com.yuan.service.model.PromoModel;
 import com.yuan.validator.ValidationResult;
 import com.yuan.validator.ValidatorImpl;
 import org.springframework.beans.BeanUtils;
@@ -29,6 +31,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private ItemStockMapper itemStockMapper;
+
+    @Autowired
+    private PromoService promoService;
 
     //创建商品
     @Override
@@ -90,6 +95,11 @@ public class ItemServiceImpl implements ItemService {
         //获取该商品的库存数量
         ItemStock itemStock = itemStockMapper.selectByItemId(id);
         ItemModel itemModel = this.changeFromItemEntity(item, itemStock);
+        //获取商品的活动信息
+        PromoModel promoModel = promoService.getPromoByItemId(itemModel.getId());
+        if (promoModel != null && promoModel.getStatus().intValue() != 3) {//该商品并存在有秒杀活动
+            itemModel.setPromoModel(promoModel);
+        }
         return itemModel;
     }
 
