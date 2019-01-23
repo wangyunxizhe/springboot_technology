@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
     //创建订单
     @Override
     @Transactional
-    public OrderModel createOrder(Integer userId, Integer itemId, Integer amount) throws MyException {
+    public OrderModel createOrder(Integer userId, Integer itemId, Integer promoId, Integer amount) throws MyException {
         //1，校验下单状态：下单商品是否存在，用户是否合法，购买数量是否正确
         ItemModel itemModel = itemService.getItemById(itemId);
         if (itemModel == null) {
@@ -53,25 +53,39 @@ public class OrderServiceImpl implements OrderService {
         if (amount <= 0 || amount > 99) {
             throw new MyException(MyEmError.PARAMETER_VALIDATION_ERROR, "数量信息不正确");
         }
-        //2，落单减库存
+        //2，校验活动信息
+        if (promoId != null) {
+            //（1）校验对应活动是否适用这个商品
+            if (promoId.intValue() != itemModel.getPromoModel().getId()) {
+                throw new MyException(MyEmError.PARAMETER_VALIDATION_ERROR, "活动信息不正确");
+            } else if (itemModel.getPromoModel().getStatus().intValue() != 2) {//（2）校验活动是否正在进行中
+                throw new MyException(MyEmError.PARAMETER_VALIDATION_ERROR, "活动信息还未开始");
+            }
+        }
+        //3，落单减库存
         boolean result = itemService.decrStock(itemId, amount);
         if (!result) {
             throw new MyException(MyEmError.STOCK_NOT_ENOUGH);
         }
-        //3，订单入库
+        //4，订单入库
         OrderModel orderModel = new OrderModel();
         orderModel.setUserId(userId);
         orderModel.setItemId(itemId);
         orderModel.setAmount(amount);
-        orderModel.setItemPrice(itemModel.getPrice());
-        orderModel.setOrderPrice(itemModel.getPrice().multiply(new BigDecimal(amount)));
+        if (promoId != null) {//有秒杀，按秒杀价下单
+            orderModel.setItemPrice(itemModel.getPromoModel().getPromoItemPrice());
+        } else {//无秒杀，按正常价下单
+            orderModel.setItemPrice(itemModel.getPrice());
+        }
+        orderModel.setPromoId(promoId);
+        orderModel.setOrderPrice(orderModel.getItemPrice().multiply(new BigDecimal(amount)));
         //生成id
         orderModel.setId(this.createOrderNo());
         OrderInfo orderInfo = this.changeFromModelToOrderInfo(orderModel);
         orderInfoMapper.insertSelective(orderInfo);
-        //4，增加商品销量
+        //5，增加商品销量
         itemService.addSales(itemId, amount);
-        //5，返回
+        //6，返回
         return orderModel;
     }
 

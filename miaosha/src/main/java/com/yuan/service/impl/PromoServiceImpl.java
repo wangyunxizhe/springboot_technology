@@ -25,7 +25,6 @@ public class PromoServiceImpl implements PromoService {
             return null;
         }
         //判断当前时间秒杀活动是否即将开始，或者正在进行
-        DateTime now = new DateTime();
         if (promoModel.getStartDate().isAfterNow()) {//开始时间晚于现在
             promoModel.setStatus(1);
         }else if(promoModel.getEndDate().isBeforeNow()){//结束时间早于现在时间

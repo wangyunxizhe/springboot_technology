@@ -5,6 +5,7 @@ import com.yuan.error.MyException;
 import com.yuan.response.CommonReturnType;
 import com.yuan.service.ItemService;
 import com.yuan.service.model.ItemModel;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,7 +58,8 @@ public class ItemController extends BaseController {
         if (itemModel.getPromoModel() != null) {//有正在进行或者即将进行的秒杀活动
             itemVO.setPromoStatus(itemModel.getPromoModel().getStatus());
             itemVO.setPromoId(itemModel.getPromoModel().getId());
-            itemVO.setStartDate(itemModel.getPromoModel().getStartDate());
+            itemVO.setStartDate(itemModel.getPromoModel().getStartDate()
+                    .toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")));
             itemVO.setPromoPrice(itemModel.getPromoModel().getPromoItemPrice());
         } else {
             itemVO.setPromoStatus(0);
