@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>智能搜索框</title>
+
+    <script th:src="@{/static/jquery-1.11.0.min.js}"></script>
+
+    <style type="text/css">
+
+        #mydiv {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -200px;
+            margin-top: -50px;
+        }
+
+        .mouseOver {
+            background-color: #708090;
+            color: #FFFAFA;
+        }
+
+        .mouseOut {
+            background-color: #FFFAFA;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+<div id="mydiv">
+    <input type="text" size="50" id="keyword" onkeyup="getMore()" onblur="keywordBlur()" onfocus="getMore()"/>
+    <input type="button" value="搜索" width="50px"/>
+    <!-- ajax关联内容展示区域 -->
+    <div id="popDiv">
+        <table id="content_table" bgcolor="#FFFAFA" border="0" cellspacing="0" cellpadding="0">
+            <tbody id="content_table_body">
+            <!-- 动态查询出的数据就显示在这里 -->
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    //核心实现方法
+    function getMore() {
+        //1，获得用户输入的内容
+        var content = document.getElementById("keyword");
+        if (content.value == "") {
+            clearContent();//输入框为空时，清空table里的元素
+            return;
+        }
+        //2，向服务器发送用户输入的内容
+        $.ajax({
+            type: "GET",
+            url: "search",
+            data: {
+                "keyword": content.value
+            },
+            success: function (data) {
+                //3，获取到数据之后，把数据展示到输入框的下面
+                var result = data;
+                var json = eval("(" + result + ")");
+                setContent(json);
+            },
+            error: function (data) {
+                alert("获取数据失败，原因为：" + data.responseText);
+            }
+        });
+    }
+
+    //设置关联数据的展示
+    function setContent(contents) {
+        //3.1，设置前先清空table
+        clearContent();
+        //3.2，设置table的位置和样式
+        setLocation();
+        //3.3，获得关联数据的长度，以此来确定生成多少<tr>
+        var size = contents.length;
+        //3.4，设置内容
+        for (var i = 0; i < size; i++) {
+            var nextNode = contents[i];//代表的是json格式数据的第i个元素
+            var tr = document.createElement("tr");
+            var td = document.createElement("td");
+            td.setAttribute("border", "0");
+            td.setAttribute("bgcolor", "#FFFAFA");
+            //鼠标滑过事件：变色
+            td.onmouseover = function () {
+                this.className = 'mouseOver';
+            };
+            //鼠标移开事件：变色
+            td.onmouseout = function () {
+                this.className = 'mouseOut';
+            };
+            //鼠标点击事件：选中该td时，将该td的value放入到input框中
+            td.onmousedown = function () {
+                document.getElementById("keyword").value = this.innerHTML;
+            }
+            var text = document.createTextNode(nextNode);
+            td.appendChild(text);
+            tr.appendChild(td);
+            document.getElementById("content_table_body").appendChild(tr);
+        }
+    }
+
+    //清空之前的数据
+    function clearContent() {
+        var contentTableBody = document.getElementById("content_table_body");
+        var size = contentTableBody.childNodes.length;//获取当前的table下面有几个tr
+        //注意：从下往上删
+        for (var i = size - 1; i >= 0; i--) {
+            contentTableBody.removeChild(contentTableBody.childNodes[i]);
+        }
+        //删完之后把div的残留样式也清掉
+        document.getElementById("popDiv").style.border = "none";
+    }
+
+    //输入框失焦事件：当输入框失去焦点的时候，清除table
+    function keywordBlur() {
+        clearContent();
+    }
+
+    //设置table的位置和样式
+    function setLocation() {
+        var content = document.getElementById("keyword");
+        var width = content.offsetWidth;//输入框的宽度
+        var left = content["offsetLeft"];//距离屏幕左侧的距离
+        //距离屏幕顶部的距离（输入框到顶部的距离+输入框自身高度）
+        var top = content["offsetTop"] + content.offsetHeight;
+        //获得显示数据的div
+        var popDiv = document.getElementById("popDiv");
+        popDiv.style.border = "black 1px solid";
+        popDiv.style.left = left + "px";
+        popDiv.style.top = top + "px";
+        popDiv.style.width = width + "px";
+        document.getElementById("content_table").style.width = width + "px";
+    }
+
+</script>
+</html>

@@ -13,6 +13,7 @@
         <module>introduction</module>
         <module>email</module>
         <module>miaosha</module>
+        <module>intelligent_search_box</module>
     </modules>
 
     <properties>
