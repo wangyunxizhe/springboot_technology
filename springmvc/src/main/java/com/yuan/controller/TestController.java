@@ -1,15 +1,22 @@
 package com.yuan.controller;
 
 import com.yuan.entity.*;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * 用于演示springmvc的数据绑定
+ *
+ * 关于GET/POST/PUT/DELETE的区别
+ * GET--用于获取资源，通常用于查询
+ * POST--用于创建资源，不具有幂等性，通常用于新增
+ * PUT--用于创建/更新资源，具有幂等性，通常用于更新
+ * DELETE--用于删除资源
+ * 幂等性：每次请求相同的参数，相同的URI，产生的结果是相同的
  */
 @Controller
 public class TestController {
@@ -113,6 +120,70 @@ public class TestController {
     @ResponseBody
     public String map(UserMapForm form) {
         return form.toString();
+    }
+
+    /**
+     * springmvc绑定Json类型：入参前面加上@RequestBody注解
+     * http://localhost:8080/json
+     * 参数：{
+     * "name": "jim",
+     * "age": 16,
+     * "son": {
+     * "addr": "nanjing",
+     * "tel": "110"
+     * }
+     * }
+     * 注意：如果不是springboot工程，需要加入相关jar的支持
+     */
+    @RequestMapping(value = "json", method = RequestMethod.POST)
+    @ResponseBody
+    public String json(@RequestBody User user) {
+        return user.toString();
+    }
+
+    /**
+     * springmvc绑定xml类型：入参前面加上@RequestBody注解
+     * 注意：如果不是springboot工程，需要加入相关jar的支持。另外配置详见UserXml
+     * <p>
+     * <?xml version="1.0" encoding="UTF-8"?>
+     * <userRoot>
+     * <name>jim</name>
+     * <age>10</age>
+     * </userRoot>
+     */
+    @RequestMapping(value = "xml", method = RequestMethod.POST)
+    @ResponseBody
+    public String xml(@RequestBody UserXml userXml) {
+        return userXml.toString();
+    }
+
+    /**
+     * springmvc参数直接绑定日期类型
+     * http://localhost:8080/date1?date1=2018-01-01
+     */
+    @RequestMapping(value = "date1")
+    @ResponseBody
+    public String date1(Date date1) {
+        return date1.toString();
+    }
+
+    //直接将url中的"yyyy-MM-dd"转为date1方法入参中的日期格式，并且可以为空
+    @InitBinder("date1")
+    public void initdate1(WebDataBinder binder) {
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(
+                new SimpleDateFormat("yyyy-MM-dd"), true));
+    }
+
+    /**
+     * springmvc参数直接绑定日期类型2
+     * 如果参数中有多个这样的日期类型需要转换，不可能去写那么多类似initdate1()这样的转换方法，
+     * 可以使用像MyDateFormatter这样的类，进行全局的日期类型转换
+     * http://localhost:8080/date2?date2=2018-01-01
+     */
+    @RequestMapping(value = "date2")
+    @ResponseBody
+    public String date2(Date date2) {
+        return date2.toString();
     }
 
 }
